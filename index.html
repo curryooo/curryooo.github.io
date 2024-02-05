@@ -6,28 +6,51 @@
     <title>jsMind</title>
     <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsmind@0.8.1/style/jsmind.css">
     <style type="text/css">
-        #jsmind_container {
+        .jsmind-container {
             width: 800px;
             height: 500px;
             border: solid 1px #ccc;
             background: #f4f4f4;
+            margin-bottom: 20px;
+        }
+
+        #menu {
+            margin-bottom: 20px;
+        }
+
+        .toggle-button {
+            margin-right: 10px;
+            cursor: pointer;
+            padding: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
         }
     </style>
 </head>
 
 <body>
-<div id="jsmind_container"></div>
+<div id="menu">
+    <button class="toggle-button" onclick="load_jsmind('data.json')">脑图1</button>
+    <button class="toggle-button" onclick="load_jsmind('data2.json')">脑图2</button>
+</div>
+
+<div id="jsmind_container" class="jsmind-container"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/jsmind@0.8.1/es6/jsmind.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsmind@0.8.1/es6/jsmind.draggable-node.js"></script>
 <script type="text/javascript">
-    function load_jsmind() {
+    function load_jsmind(jsonFileName) {
+        var jsonDataUrl = './' + jsonFileName;  // 加上路径前缀，具体路径根据文件存放位置而定
+        var containerId = 'jsmind_container';
+
         // 使用 Fetch API 加载 JSON 数据
-        fetch('data.json')
+        fetch(jsonDataUrl)
             .then(response => response.json())
             .then(data => {
                 var options = {
-                    container: 'jsmind_container',
+                    container: containerId,
                     editable: true,
                     theme: 'primary',
                 };
@@ -37,7 +60,8 @@
             .catch(error => console.error('Error fetching JSON:', error));
     }
 
-    load_jsmind();
+    // 初始化时加载第一个脑图
+    load_jsmind('data.json');
 </script>
 </body>
 </html>
